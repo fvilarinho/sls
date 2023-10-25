@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  sls:
+    platform: linux/amd64
+    build: .
+    image: ${DOCKER_REGISTRY_URL}/${DOCKER_REGISTRY_ID}/sls:${BUILD_VERSION}
