@@ -1,0 +1,12 @@
+{
+  "manager": {
+    "label": "sls-spo1",
+    "tag": "sls",
+    "type": "g6-standard-4",
+    "image": "linode/debian11",
+    "region": "br-gru"
+  },
+  "workers": [ ],
+  "transmitAllowedIps": [ "0.0.0.0/0" ],
+  "receiveAllowedIps": [ "0.0.0.0/0" ]
+}
