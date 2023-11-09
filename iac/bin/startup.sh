@@ -5,13 +5,13 @@ function checkDependencies() {
   SLS_CMD=$(which sls)
 
   if [ ! -f "$SLS_CMD" ]; then
-    echo "sls binary was not found! Please check your installation!"
+    echo "SLS binary was not found! Please check your installation!"
 
     exit 1
   fi
 }
 
-# Prepare to execute this script.
+# Prepare the environment to execute this script.
 function prepareToExecute() {
   cp -f "$ETC_DIR"/sls.conf.template "$ETC_DIR"/sls.conf
 

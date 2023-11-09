@@ -11,6 +11,7 @@ function checkDependencies() {
   fi
 }
 
+# Prepare the environment to execute this script.
 function prepareToExecute() {
   cd iac || exit 1
 }

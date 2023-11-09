@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Check the dependencies of this script.
 function checkDependencies() {
   DOCKER_CMD=$(which docker)
 
@@ -10,16 +11,19 @@ function checkDependencies() {
   fi
 }
 
+# Prepare the environment to execute this script.
 function prepareToExecute() {
   cd iac || exit 1
 
   source .env
 }
 
+# Build container image.
 function build() {
   $DOCKER_CMD compose build
 }
 
+# Main function.
 function main() {
   checkDependencies
   prepareToExecute
