@@ -1,0 +1,24 @@
+srt {
+    worker_threads ${THREADS};
+    worker_connections ${CONNECTIONS};
+
+    log_file ${LOGS_DIR}/sls.log;
+    log_level info;
+
+    server {
+        listen ${LISTEN_PORT};
+        latency ${LATENCY};
+
+        domain_player output;
+        domain_publisher input;
+
+        backlog ${BACKLOG};
+
+        idle_streams_timeout ${IDLE_TIMEOUT};
+
+        app {
+            app_player live;
+            app_publisher live;
+        }
+    }
+}
