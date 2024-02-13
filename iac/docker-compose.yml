@@ -1,26 +1,7 @@
 version: "3"
 
 services:
-  live_transmit:
+  sls:
     platform: linux/amd64
     build: .
     image: ${DOCKER_REGISTRY_URL}/${DOCKER_REGISTRY_ID}/sls:${BUILD_VERSION}
-    ports:
-      - "1935:1935/udp"
-    # environment:
-    #   - LATENCY=200
-    #   - THREADS=2
-    #   - CONNECTIONS=300
-    #   - BACKLOG=100
-    #   - IDLE_TIMEOUT=60
-    #   - LISTEN_PORT=1935
-    deploy:
-      mode: global
-      restart_policy:
-        condition: on-failure
-    volumes:
-      - etc/sls.conf:/home/sls/etc/sls.conf
-      - live_transmit_logs:/home/sls/logs
-
-volumes:
-  live_transmit_logs:
