@@ -16,11 +16,14 @@ function prepareToExecute() {
   cd iac || exit 1
 
   source .env
+
+  echo $DOCKER_REGISTRY_URL
+  echo $DOCKER_REGISTRY_ID
 }
 
 # Publish the container image.
 function publish() {
-  echo "$DOCKER_REGISTRY_PASSWORD" | $DOCKER_CMD login "$DOCKER_REGISTRY_URL" "$DOCKER_REGISTRY_ID" --password-stdin
+  echo "$DOCKER_REGISTRY_PASSWORD" | $DOCKER_CMD login -u "$DOCKER_REGISTRY_ID" "$DOCKER_REGISTRY_URL" --password-stdin
 
   $DOCKER_CMD compose push
 }
