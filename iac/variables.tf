@@ -4,12 +4,6 @@ variable "credentialsFilename" {
   default = ".credentials"
 }
 
-# Credentials section variable.
-variable "credentialsSectionName" {
-  type = string
-  default = "linode"
-}
-
 # Settings filename variable.
 variable "settingsFilename" {
   type = string

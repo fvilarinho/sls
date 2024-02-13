@@ -1,5 +1,5 @@
 # Compiling stage.
-FROM alpine:3.18.3 as build
+FROM alpine:3.19.1 as build
 
 # Install required packages to compile.
 RUN apk update &&\
@@ -34,7 +34,7 @@ RUN echo "#include <ctime>" | cat - slscore/common.cpp > /tmp/out && \
 RUN make
 
 # Build stage.
-FROM alpine:3.18.3
+FROM alpine:3.19.1
 
 # Default environment variables.
 ENV LATENCY=200

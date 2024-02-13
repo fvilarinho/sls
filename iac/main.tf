@@ -6,8 +6,3 @@ terraform {
     }
   }
 }
-
-# Credentials filename definition.
-locals {
-  credentialsFilename = pathexpand(var.credentialsFilename)
-}

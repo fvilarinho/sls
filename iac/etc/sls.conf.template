@@ -9,8 +9,8 @@ srt {
         listen ${LISTEN_PORT};
         latency ${LATENCY};
 
-        domain_player output;
-        domain_publisher input;
+        domain_player play;
+        domain_publisher stream;
 
         backlog ${BACKLOG};
 

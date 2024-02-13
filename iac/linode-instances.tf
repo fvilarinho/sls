@@ -26,6 +26,7 @@ resource "linode_instance" "manager" {
     # Install the required software and initialize the swarm.
     inline = [
       "hostnamectl set-hostname ${self.label}",
+      "export DEBIAN_FRONTEND=noninteractive",
       "apt update",
       "apt -y upgrade",
       "apt -y install bash ca-certificates curl wget htop dnsutils net-tools vim",
@@ -73,6 +74,7 @@ resource "linode_instance" "workers" {
     # Install the required software and join the instance in the swarm.
     inline = [
       "hostnamectl set-hostname ${self.label}",
+      "export DEBIAN_FRONTEND=noninteractive",
       "apt update",
       "apt -y upgrade",
       "apt -y install bash ca-certificates curl wget htop dnsutils net-tools vim",

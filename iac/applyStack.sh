@@ -22,7 +22,7 @@ function uploadTheStack() {
       -o "StrictHostKeyChecking=no" \
       -i "$PRIVATE_KEY_FILENAME" \
       .env \
-      ./stack.yml \
+      ./docker-compose.yml \
       root@"$MANAGER_NODE":/root
 }
 
@@ -32,7 +32,7 @@ function applyTheStack() {
       -o "UserKnownHostsFile=/dev/null" \
       -o "StrictHostKeyChecking=no" \
       -i "$PRIVATE_KEY_FILENAME" \
-      root@"$MANAGER_NODE" "source .env; docker stack deploy --compose-file stack.yml --prune sls"
+      root@"$MANAGER_NODE" "source .env; docker stack deploy --compose-file docker-compose.yml --prune sls"
 }
 
 # Main function.
