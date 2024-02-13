@@ -3,7 +3,7 @@ name: SLS pipeline
 on:
   push:
     tags: [ "*" ]
-    branches: [ "main" ]
+    branches: [ "*" ]
     paths-ignore:
       - "iac/*.tf"
       - "iac/*.sh"
