@@ -22,7 +22,7 @@ function uploadTheStack() {
       -o "StrictHostKeyChecking=no" \
       -i "$PRIVATE_KEY_FILENAME" \
       .env \
-      ./docker-compose.yml \
+      ./stack.yml \
       root@"$MANAGER_NODE":/root
 }
 
