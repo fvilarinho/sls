@@ -1,4 +1,4 @@
-# srt-live-server
+# SLS (SRT live server)
 Dockerized version of Edward Wu's SRT Live Server (SLS) and Haivision's SRT SDK
 All credit should go to the original tool author(s) - this is just a dockerization for convenience and portability.
 
@@ -9,7 +9,14 @@ To build, just execute the script `build.sh`.
 
 To deploy in Akamai Connected Cloud, just execute the script `deploy.sh`.
 
-### Settings:
+### Deployment settings:
+You can customize your deployment by editing the file `iac/settings.json`. If the file doesn't exist, just create it
+using the content of the template `iac/settings.json.template`. You also will need to set up the credentials of the 
+Akamai Connected Cloud in the file `iac/.credentials`. If the file doesn't exist, just create it using the content of
+the template `iac/.credentials.template`. Go to the Akamai Cloud Manager, create your API credential and then update 
+the `iac/.credentials` file. 
+
+### Streaming settings:
 * Default listen port is `1935/UDP`. Note that SRT doesn't technically have a default protocol port, so you will have to 
 explicitly call this out in stream URLs (see below). `1935/TCP` is what RTMP uses, so this makes it simpler to remember.
 * Default latency is `200ms`. (Nimble Streamer recommended no lower than `120ms` no matter what, Haivision can do lower 
@@ -21,7 +28,7 @@ for connection burps.
 * They are "stream/live" and "play/live", respectively. I changed them from the author's defaults to make them a bit 
 less confusing.
 
-If you want to customize the settings, just specify the following environment variables in the `docker-compose.yml`:
+If you want to customize the settings, just specify the following environment variables in the `iac/docker-compose.yml`:
 - `LATENCY (Default 200)`
 - `THREADS (Default 2)`
 - `CONNECTIONS (Default 300)`
