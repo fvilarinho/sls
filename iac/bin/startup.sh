@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Check the dependencies of this script.
+# Checks the dependencies of this script.
 function checkDependencies() {
   SLS_CMD=$(which sls)
 
@@ -11,11 +11,11 @@ function checkDependencies() {
   fi
 }
 
-# Prepare the environment to execute this script.
+# Prepares the environment to execute this script.
 function prepareToExecute() {
   cp -f "$ETC_DIR"/sls.conf.template "$ETC_DIR"/sls.conf
 
-  # Replace placeholders with environment variables.
+  # Replaces placeholders with environment variables.
   sed -i -e 's|${THREADS}|'"$THREADS"'|g' "$ETC_DIR"/sls.conf
   sed -i -e 's|${CONNECTIONS}|'"$CONNECTIONS"'|g' "$ETC_DIR"/sls.conf
   sed -i -e 's|${LISTEN_PORT}|'"$LISTEN_PORT"'|g' "$ETC_DIR"/sls.conf
@@ -25,12 +25,12 @@ function prepareToExecute() {
   sed -i -e 's|${LOGS_DIR}|'"$LOGS_DIR"'|g' "$ETC_DIR"/sls.conf
 }
 
-# Start sls.
+# Starts the server.
 function start() {
   $SLS_CMD -c "$ETC_DIR"/sls.conf
 }
 
-# Main functions.
+# Main function.
 function main() {
   checkDependencies
   prepareToExecute

@@ -1,10 +1,10 @@
 # Definition of the firewall rules.
 resource "linode_firewall" "default" {
-  label           = "sls-rules"
+  label           = "sls-firewall"
   inbound_policy  = "DROP"
   outbound_policy = "ACCEPT"
 
-  # Enable SSH connections.
+  # Enables SSH connections.
   inbound {
     label    = "ssh"
     action   = "ACCEPT"
@@ -13,7 +13,7 @@ resource "linode_firewall" "default" {
     ipv4     = [ "0.0.0.0/0" ]
   }
 
-  # Enable communication in the swarm.
+  # Enables communication in the swarm.
   inbound {
     label    = "swarm"
     action   = "ACCEPT"
@@ -22,7 +22,7 @@ resource "linode_firewall" "default" {
     ipv4     = [ "0.0.0.0/0" ]
   }
 
-  # Enable communication in the swarm.
+  # Enables communication in the swarm.
   inbound {
     label    = "swarm"
     action   = "ACCEPT"
@@ -31,7 +31,7 @@ resource "linode_firewall" "default" {
     ipv4     = [ "0.0.0.0/0" ]
   }
 
-  # Enable communication in the swarm.
+  # Enables communication in the swarm.
   inbound {
     label    = "swarm"
     action   = "ACCEPT"
@@ -40,7 +40,7 @@ resource "linode_firewall" "default" {
     ipv4     = [ "0.0.0.0/0" ]
   }
 
-  # Enable communication in the swarm.
+  # Enables communication in the swarm.
   inbound {
     label    = "swarm"
     action   = "ACCEPT"
@@ -49,7 +49,7 @@ resource "linode_firewall" "default" {
     ipv4     = [ "0.0.0.0/0" ]
   }
 
-  # Enable TCP traffic from the manager node.
+  # Enables TCP traffic from the manager node.
   inbound {
     label    = linode_instance.manager.label
     action   = "ACCEPT"
@@ -58,7 +58,7 @@ resource "linode_firewall" "default" {
     ipv4     = [ "${linode_instance.manager.ip_address}/32" ]
   }
 
-  # Enable UDP traffic from the manager node.
+  # Enables UDP traffic from the manager node.
   inbound {
     label    = linode_instance.manager.label
     action   = "ACCEPT"
@@ -67,9 +67,9 @@ resource "linode_firewall" "default" {
     ipv4     = [ "${linode_instance.manager.ip_address}/32" ]
   }
 
-  # Enable TCP traffic from the worker nodes.
+  # Enables TCP traffic from the worker nodes.
   dynamic "inbound" {
-    for_each = { for worker in local.settings.workers : worker.label => worker }
+    for_each = { for worker in local.settings.workers : worker.id => worker }
 
     content {
       label    = inbound.key
@@ -80,9 +80,9 @@ resource "linode_firewall" "default" {
     }
   }
 
-  # Enable UDP traffic from the worker nodes.
+  # Enables UDP traffic from the worker nodes.
   dynamic "inbound" {
-    for_each = { for worker in local.settings.workers : worker.label => worker }
+    for_each = { for worker in local.settings.workers : worker.id => worker }
 
     content {
       label    = inbound.key
@@ -93,7 +93,7 @@ resource "linode_firewall" "default" {
     }
   }
 
-  # Enable live video transmit.
+  # Enables live video transmit.
   dynamic "inbound" {
     for_each = local.settings.transmitAllowedIps
 
@@ -107,15 +107,15 @@ resource "linode_firewall" "default" {
   }
 }
 
-# Attach the firewall rules in the manager node.
+# Attaches the firewall rules in the manager node.
 resource "linode_firewall_device" "manager" {
   entity_id   = linode_instance.manager.id
   firewall_id = linode_firewall.default.id
 }
 
-# Attach the firewall rules in the worker nodes.
+# Attaches the firewall rules in the worker nodes.
 resource "linode_firewall_device" "workers" {
-  for_each    = { for worker in local.settings.workers : worker.label => worker }
+  for_each    = { for worker in local.settings.workers : worker.id => worker }
   entity_id   = linode_instance.workers[each.key].id
   firewall_id = linode_firewall.default.id
 }

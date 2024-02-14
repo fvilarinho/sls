@@ -9,7 +9,7 @@ provider "linode" {
   config_profile = "linode"
 }
 
-# Read provisioning attributes.
+# Reads the provisioning attributes.
 locals {
   settings = jsondecode(chomp(file(pathexpand(var.settingsFilename))))
 }

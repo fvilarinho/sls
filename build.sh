@@ -2,8 +2,6 @@
 
 # Check the dependencies of this script.
 function checkDependencies() {
-  DOCKER_CMD=$(which docker)
-
   if [ -z "$DOCKER_CMD" ]; then
     echo "Docker is not installed! Please install it first to continue!"
 
@@ -11,22 +9,24 @@ function checkDependencies() {
   fi
 }
 
-# Prepare the environment to execute this script.
+# Prepares the environment to execute this script.
 function prepareToExecute() {
-  cd iac || exit 1
+  source functions.sh
 
-  source .env
+  showBanner
+
+  cd iac || exit 1
 }
 
-# Build container image.
+# Builds the container image.
 function build() {
   $DOCKER_CMD compose build
 }
 
 # Main function.
 function main() {
-  checkDependencies
   prepareToExecute
+  checkDependencies
   build
 }
 

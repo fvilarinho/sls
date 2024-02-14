@@ -4,7 +4,10 @@ services:
   live_transmit:
     image: ${DOCKER_REGISTRY_URL}/${DOCKER_REGISTRY_ID}/sls:${BUILD_VERSION}
     ports:
-      - "1935:1935/udp"
+      - target: 1935
+        published: 1935
+        protocol: udp
+        mode: host
     # environment:
     #   - LATENCY=200
     #   - THREADS=2

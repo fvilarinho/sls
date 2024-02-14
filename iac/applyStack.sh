@@ -1,13 +1,7 @@
 #!/bin/bash
 
-# Check the dependencies to run this script.
+# Checks the dependencies to run this script.
 function checkDependencies() {
-  if [ ! -f "$PRIVATE_KEY_FILENAME" ]; then
-    echo "Private key filename not found! Please provide a valid private key!"
-
-    exit 1
-  fi
-
   if [ -z "$MANAGER_NODE" ]; then
     echo "Manager node not specified! Please provide a valid manager node (IP/Hostname)!"
 
@@ -15,7 +9,16 @@ function checkDependencies() {
   fi
 }
 
-# Upload the stack file to the swarm
+# Prepare the environment to execute this script.
+function prepareToExecute() {
+  cd .. || exit 1
+
+  source functions.sh
+
+  cd iac || exit 1
+}
+
+# Uploads the stack file to the swarm
 function uploadTheStack() {
   scp -q \
       -o "UserKnownHostsFile=/dev/null" \
@@ -26,7 +29,7 @@ function uploadTheStack() {
       root@"$MANAGER_NODE":/root
 }
 
-# Apply the stack in the swarm.
+# Applies the stack in the swarm.
 function applyTheStack() {
   ssh -q \
       -o "UserKnownHostsFile=/dev/null" \
@@ -37,6 +40,7 @@ function applyTheStack() {
 
 # Main function.
 function main() {
+  prepareToExecute
   checkDependencies
   uploadTheStack
   applyTheStack

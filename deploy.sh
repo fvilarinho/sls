@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# Check the dependencies to run this script.
+# Checks the dependencies to run this script.
 function checkDependencies() {
-  TERRAFORM_CMD=$(which terraform)
-
   if [ -z "$TERRAFORM_CMD" ]; then
     echo "Terraform is not installed! Please install it first to continue!"
 
@@ -11,16 +9,22 @@ function checkDependencies() {
   fi
 }
 
-# Prepare the environment to execute this script.
+# Prepares the environment to execute this script.
 function prepareToExecute() {
+  source functions.sh
+
+  showBanner
+
   cd iac || exit 1
 }
 
-# Provision the environment and deploy the stack.
+# Starts the provisioning of the environment and deploys the stack.
 function deploy() {
   $TERRAFORM_CMD init \
                  -upgrade \
-                 -migrate-state
+                 -migrate-state || exit 1
+
+  $TERRAFORM_CMD plan || exit 1
 
   $TERRAFORM_CMD apply \
                  -auto-approve
@@ -28,8 +32,8 @@ function deploy() {
 
 # Main function.
 function main() {
-  checkDependencies
   prepareToExecute
+  checkDependencies
   deploy
 }
 

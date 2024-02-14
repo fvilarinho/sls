@@ -1,11 +1,6 @@
-# Define the default password for the instances.
-resource "random_password" "default" {
-  length = 15
-}
-
-# Create the manager instance of the swarm.
+# Creates the manager instance of the swarm.
 resource "linode_instance" "manager" {
-  label           = local.settings.manager.label
+  label           = local.settings.manager.id
   tags            = [ local.settings.manager.tag ]
   type            = local.settings.manager.type
   image           = local.settings.manager.image
@@ -23,7 +18,7 @@ resource "linode_instance" "manager" {
       private_key = chomp(tls_private_key.default.private_key_openssh)
     }
 
-    # Install the required software and initialize the swarm.
+    # Installs the required software and initialize the swarm.
     inline = [
       "hostnamectl set-hostname ${self.label}",
       "export DEBIAN_FRONTEND=noninteractive",
@@ -40,20 +35,19 @@ resource "linode_instance" "manager" {
   depends_on = [ random_password.default ]
 }
 
-# Get the swarm token.
+# Gets the swarm token.
 data "external" swarmToken {
   program = [
     "./getSwarmToken.sh",
-    linode_instance.manager.ip_address,
-    local.privateKeyFilename
+    linode_instance.manager.ip_address
   ]
 
   depends_on = [ linode_instance.manager ]
 }
 
-# Create a worker instance of the swarm.
+# Creates a worker instance of the swarm.
 resource "linode_instance" "workers" {
-  for_each        = { for worker in local.settings.workers : worker.label => worker }
+  for_each        = { for worker in local.settings.workers : worker.id => worker }
   label           = each.key
   tags            = [ each.value.tag ]
   type            = each.value.type
@@ -71,7 +65,7 @@ resource "linode_instance" "workers" {
       private_key = chomp(tls_private_key.default.private_key_openssh)
     }
 
-    # Install the required software and join the instance in the swarm.
+    # Installs the required software and join the instance in the swarm.
     inline = [
       "hostnamectl set-hostname ${self.label}",
       "export DEBIAN_FRONTEND=noninteractive",
@@ -88,7 +82,7 @@ resource "linode_instance" "workers" {
   depends_on = [ data.external.swarmToken ]
 }
 
-# Apply the stack in the swarm.
+# Applies the stack in the swarm.
 resource "null_resource" "applyStack" {
   triggers = {
     always_run = timestamp()
@@ -96,8 +90,7 @@ resource "null_resource" "applyStack" {
 
   provisioner "local-exec" {
     environment = {
-      MANAGER_NODE         = linode_instance.manager.ip_address
-      PRIVATE_KEY_FILENAME = local.privateKeyFilename
+      MANAGER_NODE = linode_instance.manager.ip_address
     }
 
     quiet = true
@@ -107,7 +100,7 @@ resource "null_resource" "applyStack" {
   depends_on = [ linode_instance.workers ]
 }
 
-# Remove inactive nodes from the swarm.
+# Removes inactive nodes from the swarm.
 resource "null_resource" "cleanSwarm" {
   triggers = {
     always_run = timestamp()
