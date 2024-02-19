@@ -15,6 +15,6 @@
       "region": "us-iad"
     }
   ],
-  "transmitAllowedIps": [ "179.100.0.116/32" ],
-  "receiveAllowedIps": [ "179.100.0.116/32" ]
+  "transmitAllowedIps": [ "0.0.0.0/0" ],
+  "receiveAllowedIps": [ "0.0.0.0/0" ]
 }
